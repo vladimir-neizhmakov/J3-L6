@@ -27,7 +27,7 @@ public class Customer {
                 joinColumns = @JoinColumn(name = "customer_id"),
                 inverseJoinColumns = @JoinColumn(name = "product_id")
         )
-        private List<Customer> customers;
+        private List<Product> products;
 
         public Customer(String fullname){
                 this.fullname = fullname;

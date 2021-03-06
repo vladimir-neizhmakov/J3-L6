@@ -1,32 +1,37 @@
 package ru.geekbrains.hiber.controllers;
 
-import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.hiber.entities.Product;
-import ru.geekbrains.hiber.services.ProductService;
+import ru.geekbrains.hiber.services.HW6Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.math.BigDecimal;
 
 
 @RestController
-@RequestMapping("/start")
+@RequestMapping("/crud")
 
 public class hw6 {
     @Autowired
-    private ProductService productService;
+    private HW6Service Service;
 
     @GetMapping
-    public List<Product> getAll(){return productService.getProducts();}
+    public void crud(){
+        System.out.println("Реализация read: "+Service.getProducts());
+    //    System.out.println("Реализация create: newProduct ");
+     //   Service.addProduct(new Product("newProduct", BigDecimal.valueOf(33.33)));
+     //   System.out.println(Service.getProducts());
+    //    System.out.println("Реализация update: newProduct ");
+     //   Service.updateProduct(4L, "newProductUpdated",BigDecimal.valueOf(44.44));
+     //   System.out.println(Service.getProducts());
+     //   System.out.println("Реализация delete: newProductUpdated ");
+    //    Service.deleteProduct(4L);
+    //    System.out.println(Service.getProducts());
+        System.out.println("Реализация поиска продуктов по id покупателя");
+        System.out.println(Service.getCustomerProducts(1L));
+        System.out.println("Реализация поиска покупателей по id продукта");
+        System.out.println(Service.getProductCustomers(1L));
+    }
 
 
 }

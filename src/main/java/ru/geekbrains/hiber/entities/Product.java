@@ -30,7 +30,7 @@ public class Product {
                 joinColumns = @JoinColumn(name = "product_id"),
                 inverseJoinColumns = @JoinColumn(name = "customer_id")
         )
-        private List<Product> products;
+        private List<Customer> customers;
 
         public Product(String title, BigDecimal cost){
                 this.title = title;

@@ -4,14 +4,16 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.geekbrains.hiber.entities.Customer;
 import ru.geekbrains.hiber.entities.Product;
 
 import javax.persistence.EntityManagerFactory;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
-@Component
+@Repository
 public class CustomerRepository {
 
     private SessionFactory sessionFactory;
@@ -24,20 +26,20 @@ public class CustomerRepository {
         this.sessionFactory = factory.unwrap(SessionFactory.class);
     }
 
-    public void create(String newCustomer) {
+    public void create(Customer newCustomer) {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
-            session.save(new Customer(newCustomer));
+            session.save(newCustomer);
             session.getTransaction().commit();
         }
     }
 
-    public void read() {
+    public List<Customer> read() {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
             List<Customer> customers = session.createQuery("from Customer").getResultList();
-            System.out.println(customers);
             session.getTransaction().commit();
+            return Collections.unmodifiableList(customers);
         }
     }
 
@@ -61,5 +63,17 @@ public class CustomerRepository {
 
     public void shutdown() {
         sessionFactory.close();
+    }
+
+    public List getProductCustomers(long product_id){
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+            //Не получилось победить вернуть результат запроса как List<Product>
+            List customers = session.createQuery("select p.customers from Product p where p.id = :product_id")
+                    .setParameter("product_id", product_id)
+                    .getResultList();
+            session.getTransaction().commit();
+            return Collections.unmodifiableList(customers);
+        }
     }
 }
